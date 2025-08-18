@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import API from "../utils/axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
+import MatchChat from "../components/MatchChat";
 
 const MatchPage = () => {
   const { id } = useParams();
@@ -19,6 +20,14 @@ const MatchPage = () => {
   const isHost = useMemo(() => {
     if (!match || !user) return false;
     return String(match.host?._id || match.host) === String(user._id);
+  }, [match, user]);
+
+  const isOnTeamA = useMemo(() => {
+    return match?.teamA?.some((p) => (p._id || p) === user._id);
+  }, [match, user]);
+
+  const isOnTeamB = useMemo(() => {
+    return match?.teamB?.some((p) => (p._id || p) === user._id);
   }, [match, user]);
 
   const fetchMatch = async () => {
@@ -77,6 +86,19 @@ const MatchPage = () => {
       toast.success("Match ended");
     } catch (e) {
       toast.error(e.response?.data?.message || "Failed to end match");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const joinTeam = async (team) => {
+    try {
+      setBusy(true);
+      await API.post(`/matches/${id}/join`, { team });
+      toast.success(`Joined Team ${team}`);
+      fetchMatch(); // refresh match data
+    } catch (e) {
+      toast.error(e.response?.data?.message || "Failed to join team");
     } finally {
       setBusy(false);
     }
@@ -202,6 +224,51 @@ const MatchPage = () => {
           </div>
         </div>
 
+        {/* Join team buttons (if pending and not on any team) */}
+        {match.status === "pending" && !isOnTeamA && !isOnTeamB && (
+          <div className="bg-white rounded-2xl shadow p-6 mt-4 flex gap-4 justify-center">
+            <button
+              onClick={() => joinTeam("A")}
+              disabled={busy}
+              className="bg-emerald-600 text-white px-4 py-2 rounded-lg disabled:opacity-60"
+            >
+              Join Team A
+            </button>
+            <button
+              onClick={() => joinTeam("B")}
+              disabled={busy}
+              className="bg-indigo-600 text-white px-4 py-2 rounded-lg disabled:opacity-60"
+            >
+              Join Team B
+            </button>
+          </div>
+        )}
+
+        {/* Chat component */}
+        <MatchChat matchId={id} />
+        
+
+        {/* Delete match button (host only, if pending or ended) */}
+        {isHost && (match.status === "pending") && (
+          <button
+            onClick={async () => {
+              setBusy(true);
+              try {
+                await API.delete(`/matches/${id}`);
+                toast.success("Match deleted");
+                navigate("/home");
+              } catch (e) {
+                toast.error(e.response?.data?.message || "Failed to delete match");
+              } finally {
+                setBusy(false);
+              }
+            }}
+            className="col-span-2 bg-red-700 cursor-pointer text-white px-4 py-3 rounded-lg mt-2 disabled:opacity-60"
+            disabled={busy}
+          >
+            Delete Match
+          </button>
+        )}
         {/* Back link */}
         <div className="mt-6">
           <button

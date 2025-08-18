@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import Match from "../models/Matches.js";
 import User from "../models/User.js";
+import Message from "../models/Messages.js";
 
 // @desc    Create a new match
 // @route   POST /api/matches
@@ -165,6 +166,7 @@ export const endMatch = async (req, res) => {
     }
 
     await match.save();
+    await Message.deleteMany({ match: req.params.id });
     res.json({ message: "Match ended", match });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -227,4 +229,32 @@ export const getUserMatches = async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+};
+
+// @desc    Get match messages
+// @route   GET /api/matches/:id/messages
+// @access  Private
+export const getMatchMessages = async (req, res) => {
+  try {
+    const matchId = req.params.id;
+    const messages = await Message.find({ match: matchId })
+      .sort({ time: 1 });
+    res.json(messages);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// @desc    Delete a match
+// @route   DELETE /api/matches/:id
+// @access  Private (host only)
+export const deleteMatch = async (req, res) => {
+  const match = await Match.findById(req.params.id);
+  if (!match) return res.status(404).json({ message: "Match not found" });
+  if (String(match.host) !== String(req.user._id))
+    return res.status(403).json({ message: "Only host can delete the match" });
+
+  await match.deleteOne();
+  await Message.deleteMany({ match: match._id }); // cleanup messages
+  res.json({ message: "Match deleted" });
 };

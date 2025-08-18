@@ -8,6 +8,8 @@ import {
   listMatches,
   getMatchById,
   getUserMatches,
+  getMatchMessages,
+  deleteMatch,
 } from "../controllers/matchController.js";
 import { protect } from "../middlewares/authMiddleware.js";
 const router = express.Router();
@@ -20,5 +22,7 @@ router.post("/:id/end", protect, endMatch);
 router.get("/", protect, listMatches);
 router.get("/:id", protect, getMatchById);
 router.get("/user/:userId", protect, getUserMatches);
+router.get("/:id/messages", protect, getMatchMessages);
+router.delete("/:id", protect, deleteMatch);
 
 export default router;
