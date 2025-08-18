@@ -3,6 +3,7 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
+import MatchPage from "./pages/MatchPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
 
@@ -22,9 +23,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/match/:id"
+          element={
+            <ProtectedRoute>
+              <MatchPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );
 }
-
 export default App;
