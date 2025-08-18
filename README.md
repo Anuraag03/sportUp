@@ -50,12 +50,9 @@ npm install
 
 #### Create `.env` file in `backend/`
 ```env
-PORT=5000
+PORT=3000
 MONGO_URI=mongodb://127.0.0.1:27017/sports-app
 JWT_SECRET=your_jwt_secret_key
-CLOUDINARY_CLOUD_NAME=xxxx
-CLOUDINARY_API_KEY=xxxx
-CLOUDINARY_API_SECRET=xxxx
 ```
 
 #### Run backend
