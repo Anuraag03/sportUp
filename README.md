@@ -72,19 +72,6 @@ Backend runs on [http://localhost:5000](http://localhost:5000)
 cd frontend
 npm install
 ```
-
-#### Configure Vite Proxy (`vite.config.js`)
-```js
-server: {
-  proxy: {
-    "/api": {
-      target: "http://localhost:5000",
-      changeOrigin: true,
-    },
-  },
-},
-```
-
 #### Run frontend
 ```bash
 npm run dev
