@@ -31,7 +31,6 @@ A full-stack MERN application that allows users to:
 - socket.io (real-time events)
 
 ---
----
 
 ## 🚀 Setup & Installation
 
@@ -108,7 +107,6 @@ Frontend runs on [http://localhost:3000](http://localhost:3000)
 - Match History
 
 ---
----
 
 ## 🛠️ Deployment
 - **Backend**: Render / Railway / Heroku
@@ -125,7 +123,3 @@ Frontend runs on [http://localhost:3000](http://localhost:3000)
 4. Push to branch (`git push origin feature/awesome`)
 5. Open a Pull Request
 
----
-
-## 📜 License
-MIT License © 2025 [Your Name]
