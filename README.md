@@ -108,22 +108,6 @@ Frontend runs on [http://localhost:3000](http://localhost:3000)
 - Match History
 
 ---
-
-## 🧑‍💻 Scripts
-
-### Backend
-```bash
-npm run dev    # Run with nodemon
-npm start      # Run production server
-```
-
-### Frontend
-```bash
-npm run dev    # Start Vite dev server
-npm run build  # Build production files
-npm run preview # Preview production build
-```
-
 ---
 
 ## 🛠️ Deployment
