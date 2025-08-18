@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import API from "../utils/axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
@@ -8,9 +8,12 @@ const MatchPage = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const initialPin = location.state?.pin || "";
+  const [pin, setPin] = useState(initialPin);
+
   const [match, setMatch] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [pin, setPin] = useState("");
   const [busy, setBusy] = useState(false);
 
   const isHost = useMemo(() => {
@@ -90,6 +93,14 @@ const MatchPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-5xl mx-auto p-4 md:p-8">
+        {/* Show PIN for host */}
+        {isHost && pin && (
+          <div className="mb-4 bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded">
+            <span className="font-semibold">Match PIN:</span> <span className="font-mono text-lg">{pin}</span>
+            
+          </div>
+        )}
+
         {/* Scoreboard */}
         <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-between">
           <div className="text-center">

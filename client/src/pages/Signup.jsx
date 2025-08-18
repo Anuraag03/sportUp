@@ -22,7 +22,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex flex-col justify-center items-center h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded-lg p-6 w-96"
@@ -56,6 +56,14 @@ const Signup = () => {
           Signup
         </button>
       </form>
+      <div className="mt-4 text-center">
+        <p>
+          Already have an account?{" "}
+          <a href="/login" className="text-blue-600 hover:underline">
+            Login
+          </a>
+        </p>
+      </div>
     </div>
   );
 };

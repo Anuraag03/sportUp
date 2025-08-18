@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import Match from "../models/Matches.js";
 import User from "../models/User.js";
 
@@ -6,14 +7,25 @@ import User from "../models/User.js";
 // @access  Private (host only)
 export const createMatch = async (req, res) => {
   try {
-    const { pin } = req.body;
+    const { name, sport } = req.body;
+    if (!name || !sport) {
+      return res.status(400).json({ message: "Match name and sport required" });
+    }
+
+    // Generate random 4-digit PIN
+    const pin = Math.floor(1000 + Math.random() * 9000).toString();
+    const salt = await bcrypt.genSalt(10);
+    const pinHash = await bcrypt.hash(pin, salt);
 
     const match = await Match.create({
       host: req.user._id,
-      pin,
+      name,
+      sport,
+      pin: pinHash, // store hash
     });
 
-    res.status(201).json(match);
+    // Return the PIN only to the host
+    res.status(201).json({ ...match.toObject(), pin });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -64,7 +76,9 @@ export const startMatch = async (req, res) => {
     if (String(match.host) !== String(req.user._id))
       return res.status(403).json({ message: "Only host can start the match" });
 
-    if (match.pin !== pin)
+    // Verify PIN using bcrypt
+    const isMatch = await bcrypt.compare(pin, match.pin);
+    if (!isMatch)
       return res.status(400).json({ message: "Invalid PIN" });
 
     match.status = "started";
@@ -178,14 +192,38 @@ export const listMatches = async (req, res) => {
 // @route   GET /api/matches/:id
 // @access  Private
 export const getMatchById = async (req, res) => {
+  const match = await Match.findById(req.params.id)
+    .populate("host", "username")
+    .populate("teamA", "username")
+    .populate("teamB", "username");
+  if (!match) return res.status(404).json({ message: "Match not found" });
+
+  // Do NOT send the hashed pin
+  const matchObj = match.toObject();
+  delete matchObj.pin;
+
+  res.json(matchObj);
+};
+
+// @desc    Get matches played by a user
+// @route   GET /api/matches/user/:userId
+// @access  Private
+export const getUserMatches = async (req, res) => {
   try {
-    const match = await Match.findById(req.params.id)
+    const userId = req.params.userId;
+    const matches = await Match.find({
+      $or: [
+        { teamA: userId },
+        { teamB: userId }
+      ],
+      status: "ended"
+    })
       .populate("host", "username")
       .populate("teamA", "username")
-      .populate("teamB", "username");
+      .populate("teamB", "username")
+      .sort({ endedAt: -1 });
 
-    if (!match) return res.status(404).json({ message: "Match not found" });
-    res.json(match);
+    res.json(matches);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

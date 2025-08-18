@@ -5,9 +5,11 @@ import {
   startMatch,
   updateScore,
   endMatch,
+  listMatches,
+  getMatchById,
+  getUserMatches,
 } from "../controllers/matchController.js";
 import { protect } from "../middlewares/authMiddleware.js";
-import { listMatches, getMatchById } from "../controllers/matchController.js";
 const router = express.Router();
 
 router.post("/", protect, createMatch);
@@ -17,5 +19,6 @@ router.put("/:id/score", protect, updateScore);
 router.post("/:id/end", protect, endMatch);
 router.get("/", protect, listMatches);
 router.get("/:id", protect, getMatchById);
+router.get("/user/:userId", protect, getUserMatches);
 
 export default router;

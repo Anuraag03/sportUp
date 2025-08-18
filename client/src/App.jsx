@@ -6,10 +6,12 @@ import Home from "./pages/Home";
 import MatchPage from "./pages/MatchPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Toaster } from "react-hot-toast";
-
+import NavBar from "./components/NavBar";
+import Profile from "./pages/Profile";
 function App() {
   return (
     <Router>
+      <NavBar />
       <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<Landing />} />
@@ -31,6 +33,11 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/profile/:id" 
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>} />
       </Routes>
     </Router>
   );
