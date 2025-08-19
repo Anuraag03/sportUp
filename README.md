@@ -31,7 +31,6 @@ A full-stack MERN application that allows users to:
 - socket.io (real-time events)
 
 ---
----
 
 ## 🚀 Setup & Installation
 
@@ -51,12 +50,9 @@ npm install
 
 #### Create `.env` file in `backend/`
 ```env
-PORT=5000
+PORT=3000
 MONGO_URI=mongodb://127.0.0.1:27017/sports-app
 JWT_SECRET=your_jwt_secret_key
-CLOUDINARY_CLOUD_NAME=xxxx
-CLOUDINARY_API_KEY=xxxx
-CLOUDINARY_API_SECRET=xxxx
 ```
 
 #### Run backend
@@ -124,7 +120,3 @@ Frontend runs on [http://localhost:3000](http://localhost:3000)
 4. Push to branch (`git push origin feature/awesome`)
 5. Open a Pull Request
 
----
-
-## 📜 License
-MIT License © 2025 [Your Name]
