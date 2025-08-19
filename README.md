@@ -108,7 +108,6 @@ Frontend runs on [http://localhost:3000](http://localhost:3000)
 - Match History
 
 ---
----
 
 ## 🛠️ Deployment
 - **Backend**: Render / Railway / Heroku
