@@ -32,38 +32,43 @@ const MatchCard = ({ match, onJoined }) => {
 
   return (
     <div
-      className="bg-white rounded-2xl shadow p-5 flex flex-col gap-3 match-card"
+      className="bg-slate-900 border-2 border-red-600 rounded-2xl shadow-2xl p-5 flex flex-col gap-3 hover:border-red-500 transition-colors cursor-pointer"
       onClick={handleClick}
-      style={{ cursor: "pointer" }}
     >
       <div className="flex items-center justify-between">
         <div>
-          <h4 className="font-semibold">
+          <h4 className="font-semibold text-white">
             Match by {match.host?.username || "Host"}
           </h4>
-          <p className="text-sm text-gray-500">Status: {match.status}</p>
+          <p className="text-sm text-gray-400">Status: {match.status}</p>
         </div>
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-gray-300">
           Team A: {teamCount.A} · Team B: {teamCount.B}
         </div>
       </div>
       <div className="flex gap-2">
         <button
-          className="bg-emerald-600 text-white px-4 py-2 rounded-lg disabled:opacity-60"
-          onClick={() => join("A")}
+          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-300 font-semibold disabled:opacity-60"
+          onClick={(e) => {
+            e.stopPropagation();
+            join("A");
+          }}
           disabled={joining || match.status !== "pending"}
         >
           Join Team A
         </button>
         <button
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg disabled:opacity-60"
-          onClick={() => join("B")}
+          className="bg-slate-700 text-white px-4 py-2 rounded-lg hover:bg-slate-600 transition-all duration-300 font-semibold disabled:opacity-60 border border-red-600"
+          onClick={(e) => {
+            e.stopPropagation();
+            join("B");
+          }}
           disabled={joining || match.status !== "pending"}
         >
           Join Team B
         </button>
       </div>
-      <h3>{match.title}</h3>
+      <h3 className="text-white font-medium">{match.title}</h3>
     </div>
   );
 };

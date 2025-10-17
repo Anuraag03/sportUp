@@ -44,7 +44,6 @@ const MatchPage = () => {
 
   useEffect(() => {
     fetchMatch();
-    // Optional: light polling to keep roster/score fresh
     const t = setInterval(fetchMatch, 5000);
     return () => clearInterval(t);
   }, [id]);
@@ -96,7 +95,7 @@ const MatchPage = () => {
       setBusy(true);
       await API.post(`/matches/${id}/join`, { team });
       toast.success(`Joined Team ${team}`);
-      fetchMatch(); // refresh match data
+      fetchMatch();
     } catch (e) {
       toast.error(e.response?.data?.message || "Failed to join team");
     } finally {
@@ -104,7 +103,7 @@ const MatchPage = () => {
     }
   };
 
-  if (loading) return <div className="p-6">Loading match…</div>;
+  if (loading) return <div className="p-6 text-white bg-gradient-to-br from-black via-slate-900 to-red-950 min-h-screen">Loading match…</div>;
   if (!match) return null;
 
   const teamA = match.teamA || [];
@@ -113,74 +112,73 @@ const MatchPage = () => {
   const scoreB = match.scores?.teamB ?? 0;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-red-950">
       <div className="max-w-5xl mx-auto p-4 md:p-8">
         {/* Show PIN for host */}
         {isHost && pin && (
-          <div className="mb-4 bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded">
+          <div className="mb-4 bg-red-900/30 border-l-4 border-red-600 p-4 rounded text-white">
             <span className="font-semibold">Match PIN:</span> <span className="font-mono text-lg">{pin}</span>
-            
           </div>
         )}
 
         {/* Scoreboard */}
-        <div className="bg-white rounded-2xl shadow p-6 flex items-center justify-between">
+        <div className="bg-slate-900 border-2 border-red-600 rounded-2xl shadow-2xl p-6 flex items-center justify-between">
           <div className="text-center">
-            <div className="text-sm text-gray-500">Team A</div>
-            <div className="text-3xl font-bold">{scoreA}</div>
+            <div className="text-sm text-gray-400">Team A</div>
+            <div className="text-3xl font-bold text-red-500">{scoreA}</div>
           </div>
           <div className="text-center">
-            <div className="text-xs text-gray-500">Status</div>
-            <div className="text-sm font-semibold">{match.status}</div>
+            <div className="text-xs text-gray-400">Status</div>
+            <div className="text-sm font-semibold text-white">{match.status}</div>
             {match.winner && (
-              <div className="text-xs text-gray-600 mt-1">
+              <div className="text-xs text-gray-300 mt-1">
                 Winner: {match.winner === "A" ? "Team A" : match.winner === "B" ? "Team B" : "Draw"}
               </div>
             )}
           </div>
           <div className="text-center">
-            <div className="text-sm text-gray-500">Team B</div>
-            <div className="text-3xl font-bold">{scoreB}</div>
+            <div className="text-sm text-gray-400">Team B</div>
+            <div className="text-3xl font-bold text-red-500">{scoreB}</div>
           </div>
         </div>
 
         {/* Host actions */}
         {isHost && match.status === "pending" && (
-          <div className="bg-white rounded-2xl shadow p-6 mt-4 flex items-end gap-3">
+          <div className="bg-slate-900 border-2 border-red-600 rounded-2xl shadow-2xl p-6 mt-4 flex items-end gap-3">
             <div className="grow">
-              <label className="block text-sm text-gray-600 mb-1">Enter PIN to start</label>
+              <label className="block text-sm text-gray-300 mb-1">Enter PIN to start</label>
               <input
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
                 maxLength={4}
                 placeholder="****"
-                className="border rounded px-3 py-2 w-40 tracking-widest text-center"
+                className="border-2 border-gray-700 bg-black text-white rounded px-3 py-2 w-40 tracking-widest text-center focus:border-red-600 focus:outline-none transition-colors"
               />
             </div>
             <button
               onClick={startMatch}
               disabled={busy}
-              className="bg-blue-600 text-white px-5 py-2 rounded-lg disabled:opacity-60"
+              className="bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-red-700/50 disabled:opacity-60"
             >
               Start Match
             </button>
           </div>
         )}
 
-        {/* Score controls (any participant while started) */}
+        {/* Score controls */}
         {match.status === "started" && (
-          <div className="bg-white rounded-2xl shadow p-6 mt-4 grid grid-cols-2 gap-3">
+          <div className="bg-slate-900 border-2 border-red-600 rounded-2xl shadow-2xl p-6 mt-4 grid grid-cols-2 gap-3">
             <button
               onClick={() => addPoints("A", 1)}
               disabled={busy}
-              className="bg-emerald-600 text-white px-4 py-3 rounded-lg disabled:opacity-60"
+              className="bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 transition-all duration-300 font-semibold disabled:opacity-60"
             >
               +1 Team A
             </button>
             <button
               onClick={() => addPoints("B", 1)}
               disabled={busy}
-              className="bg-indigo-600 text-white px-4 py-3 rounded-lg disabled:opacity-60"
+              className="bg-slate-700 text-white px-4 py-3 rounded-lg hover:bg-slate-600 transition-all duration-300 font-semibold border border-red-600 disabled:opacity-60"
             >
               +1 Team B
             </button>
@@ -189,7 +187,7 @@ const MatchPage = () => {
               <button
                 onClick={endMatch}
                 disabled={busy}
-                className="col-span-2 bg-red-600 text-white px-4 py-3 rounded-lg mt-2 disabled:opacity-60"
+                className="col-span-2 bg-red-700 text-white px-4 py-3 rounded-lg mt-2 hover:bg-red-800 transition-all duration-300 font-semibold disabled:opacity-60"
               >
                 End Match
               </button>
@@ -199,24 +197,24 @@ const MatchPage = () => {
 
         {/* Rosters */}
         <div className="grid md:grid-cols-2 gap-4 mt-6">
-          <div className="bg-white rounded-2xl shadow p-5">
-            <h3 className="font-semibold mb-3">Team A</h3>
+          <div className="bg-slate-900 border-2 border-red-600 rounded-2xl shadow-2xl p-5">
+            <h3 className="font-semibold mb-3 text-red-500">Team A</h3>
             <ul className="space-y-1">
-              {teamA.length === 0 && <li className="text-sm text-gray-500">No players yet</li>}
+              {teamA.length === 0 && <li className="text-sm text-gray-400">No players yet</li>}
               {teamA.map((p) => (
-                <li key={p._id || p} className="text-sm">
+                <li key={p._id || p} className="text-sm text-gray-300">
                   @{p.username || p}
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="bg-white rounded-2xl shadow p-5">
-            <h3 className="font-semibold mb-3">Team B</h3>
+          <div className="bg-slate-900 border-2 border-red-600 rounded-2xl shadow-2xl p-5">
+            <h3 className="font-semibold mb-3 text-red-500">Team B</h3>
             <ul className="space-y-1">
-              {teamB.length === 0 && <li className="text-sm text-gray-500">No players yet</li>}
+              {teamB.length === 0 && <li className="text-sm text-gray-400">No players yet</li>}
               {teamB.map((p) => (
-                <li key={p._id || p} className="text-sm">
+                <li key={p._id || p} className="text-sm text-gray-300">
                   @{p.username || p}
                 </li>
               ))}
@@ -224,20 +222,20 @@ const MatchPage = () => {
           </div>
         </div>
 
-        {/* Join team buttons (if pending and not on any team) */}
+        {/* Join team buttons */}
         {match.status === "pending" && !isOnTeamA && !isOnTeamB && (
-          <div className="bg-white rounded-2xl shadow p-6 mt-4 flex gap-4 justify-center">
+          <div className="bg-slate-900 border-2 border-red-600 rounded-2xl shadow-2xl p-6 mt-4 flex gap-4 justify-center">
             <button
               onClick={() => joinTeam("A")}
               disabled={busy}
-              className="bg-emerald-600 text-white px-4 py-2 rounded-lg disabled:opacity-60"
+              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-300 font-semibold disabled:opacity-60"
             >
               Join Team A
             </button>
             <button
               onClick={() => joinTeam("B")}
               disabled={busy}
-              className="bg-indigo-600 text-white px-4 py-2 rounded-lg disabled:opacity-60"
+              className="bg-slate-700 text-white px-4 py-2 rounded-lg hover:bg-slate-600 transition-all duration-300 font-semibold border border-red-600 disabled:opacity-60"
             >
               Join Team B
             </button>
@@ -246,10 +244,9 @@ const MatchPage = () => {
 
         {/* Chat component */}
         <MatchChat matchId={id} />
-        
 
-        {/* Delete match button (host only, if pending or ended) */}
-        {isHost && (match.status === "pending") && (
+        {/* Delete match button */}
+        {isHost && match.status === "pending" && (
           <button
             onClick={async () => {
               setBusy(true);
@@ -263,17 +260,18 @@ const MatchPage = () => {
                 setBusy(false);
               }
             }}
-            className="col-span-2 bg-red-700 cursor-pointer text-white px-4 py-3 rounded-lg mt-2 disabled:opacity-60"
+            className="w-full bg-red-700 cursor-pointer text-white px-4 py-3 rounded-lg mt-4 hover:bg-red-800 transition-all duration-300 font-semibold disabled:opacity-60"
             disabled={busy}
           >
             Delete Match
           </button>
         )}
+
         {/* Back link */}
         <div className="mt-6">
           <button
             onClick={() => navigate("/home")}
-            className="text-sm text-gray-600 underline"
+            className="text-sm text-gray-400 hover:text-red-500 transition-colors underline"
           >
             ← Back to Home
           </button>

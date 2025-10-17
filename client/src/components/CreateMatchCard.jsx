@@ -29,30 +29,32 @@ const CreateMatchCard = ({ onCreated }) => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow p-5">
-      <h3 className="text-lg font-semibold mb-3">Host a Match</h3>
+    <div className="bg-slate-900 border-2 border-red-600 rounded-2xl shadow-2xl p-6">
+      <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
+        Host a Match
+      </h3>
       <form onSubmit={createMatch} className="flex flex-col gap-3">
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Match Name"
-          className="border rounded px-3 py-2"
+          className="border-2 border-gray-700 bg-black text-white rounded px-3 py-2 focus:border-red-600 focus:outline-none transition-colors"
         />
         <input
           value={sport}
           onChange={(e) => setSport(e.target.value)}
           placeholder="Sport"
-          className="border rounded px-3 py-2"
+          className="border-2 border-gray-700 bg-black text-white rounded px-3 py-2 focus:border-red-600 focus:outline-none transition-colors"
         />
         <button
           type="submit"
           disabled={submitting}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg disabled:opacity-60"
+          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-red-700/50 disabled:opacity-60"
         >
           {submitting ? "Creating…" : "Create"}
         </button>
       </form>
-      <p className="text-xs text-gray-500 mt-2">
+      <p className="text-xs text-gray-400 mt-3">
         PIN will be generated automatically and shown to the host.
       </p>
     </div>

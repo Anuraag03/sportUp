@@ -1,1 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
 @import "tailwindcss";
+
+* {
+  font-family: 'Bungee', sans-serif !important;
+}

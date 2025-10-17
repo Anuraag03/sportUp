@@ -12,23 +12,23 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-blue-600 px-6 py-3 flex items-center justify-between">
-      <Link to={user ? "/home" : "/"} className="text-white font-bold text-xl">
+    <nav className="bg-slate-900 px-6 py-4 flex items-center justify-between shadow-lg border-b-2 border-red-600">
+      <Link to={user ? "/home" : "/"} className="text-red-500 font-bold text-2xl hover:text-red-400 transition-colors">
         SportUp
       </Link>
       <div className="flex items-center gap-6">
         {!user ? (
           <>
-            <Link to="/login" className="text-white hover:underline">Login</Link>
-            <Link to="/signup" className="text-white hover:underline">Signup</Link>
+            <Link to="/login" className="text-white hover:text-red-500 transition-colors font-medium">Login</Link>
+            <Link to="/signup" className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors font-medium">Signup</Link>
             
           </>
         ) : (
           <>
-            <Link to={`/profile/${user._id}`} className="text-white hover:underline">Profile</Link>
+            <Link to={`/profile/${user._id}`} className="text-white hover:text-red-500 transition-colors font-medium">Profile</Link>
             <button
               onClick={handleLogout}
-              className="text-white hover:underline bg-transparent border-none cursor-pointer"
+              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors font-medium cursor-pointer border-none"
             >
               Logout
             </button>

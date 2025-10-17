@@ -14,7 +14,6 @@ const MatchChat = ({ matchId }) => {
   useEffect(() => {
     if (user && matchId) {
       socket.emit("joinMatch", { matchId, user: { username: user.username, _id: user._id } });
-      // Fetch persisted messages
       API.get(`/matches/${matchId}/messages`).then(res => {
         setMessages(res.data);
       });
@@ -46,13 +45,14 @@ const MatchChat = ({ matchId }) => {
   };
 
   return (
-    <div className="bg-white rounded shadow p-4 mt-4">
-      <h4 className="font-bold mb-2">Match Chat</h4>
-      <div className="h-48 overflow-y-auto mb-2 border rounded p-2 bg-gray-50">
+    <div className="bg-slate-900 border-2 border-red-600 rounded-2xl shadow-2xl p-4 mt-4">
+      <h4 className="font-bold mb-3 text-red-500">Match Chat</h4>
+      <div className="h-48 overflow-y-auto mb-3 border-2 border-gray-700 rounded p-3 bg-black">
         {messages.map((msg, idx) => (
-          <div key={idx} className="mb-1">
-            <span className="font-semibold">{msg.username || msg.user.username}:</span> {msg.message}
-            <span className="text-xs text-gray-400 ml-2">{new Date(msg.time).toLocaleTimeString()}</span>
+          <div key={idx} className="mb-2">
+            <span className="font-semibold text-red-500">{msg.username || msg.user.username}:</span>{" "}
+            <span className="text-gray-300">{msg.message}</span>
+            <span className="text-xs text-gray-500 ml-2">{new Date(msg.time).toLocaleTimeString()}</span>
           </div>
         ))}
         <div ref={messagesEndRef} />
@@ -61,10 +61,12 @@ const MatchChat = ({ matchId }) => {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="border rounded px-2 py-1 flex-1"
+          className="border-2 border-gray-700 bg-black text-white rounded px-3 py-2 flex-1 focus:border-red-600 focus:outline-none transition-colors"
           placeholder="Type a message..."
         />
-        <button type="submit" className="bg-blue-600 text-white px-3 py-1 rounded">Send</button>
+        <button type="submit" className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-all duration-300 font-semibold">
+          Send
+        </button>
       </form>
     </div>
   );

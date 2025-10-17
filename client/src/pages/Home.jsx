@@ -12,7 +12,7 @@ const Home = () => {
 
   const fetchMatches = async () => {
     try {
-      const { data } = await API.get("/matches"); // pending + started
+      const { data } = await API.get("/matches");
       setMatches(data);
     } catch (e) {
       toast.error("Failed to load matches");
@@ -23,7 +23,6 @@ const Home = () => {
 
   useEffect(() => {
     fetchMatches();
-    // Optional: poll every 10s so new matches show up for everyone
     const t = setInterval(fetchMatches, 10000);
     return () => clearInterval(t);
   }, []);
@@ -33,20 +32,22 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-black via-slate-900 to-red-950">
       <header className="max-w-5xl mx-auto py-8 px-4">
-        <h1 className="text-2xl font-bold">Hi {user?.username} 👋</h1>
-        <p className="text-gray-600 mt-1">Create or join a match below.</p>
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
+          Hi {user?.username} 👋
+        </h1>
+        <p className="text-gray-300 mt-2">Create or join a match below.</p>
       </header>
 
       <main className="max-w-5xl mx-auto px-4 pb-12">
         <CreateMatchCard onCreated={onCreated} />
 
-        <h2 className="text-xl font-semibold mt-8 mb-4">Open Matches</h2>
+        <h2 className="text-2xl font-semibold mt-8 mb-4 text-white">Open Matches</h2>
         {loading ? (
-          <div className="text-gray-600">Loading…</div>
+          <div className="text-gray-300">Loading…</div>
         ) : matches.length === 0 ? (
-          <div className="text-gray-600">No matches yet. Be the first to host!</div>
+          <div className="text-gray-300">No matches yet. Be the first to host!</div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
             {matches.map((m) => (
