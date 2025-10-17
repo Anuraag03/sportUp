@@ -1,4 +1,8 @@
 # 🏀 Sports Matchmaking App (MERN)
+Home Page:
+<img width="1917" height="892" alt="image" src="https://github.com/user-attachments/assets/07e5e82d-9957-4b13-b47b-3b0dba0d1a6e" />
+Match Page:
+<img width="1912" height="886" alt="Screenshot 2025-10-17 185251" src="https://github.com/user-attachments/assets/758da4d4-cbee-42a5-a030-a374784cd07b" />
 
 A full-stack MERN application that allows users to:
 - Sign up / Log in (with authentication & protected routes)
